@@ -135,9 +135,9 @@ Resources:
     Properties:
       DomainName: !Ref Domain
       AppId: !GetAtt AmplifyApp.AppId
-      SubDomainSettings:
-        - Prefix: main
-          BranchName: !GetAtt AmplifyMainBranch.BranchName
+      # SubDomainSettings:
+      #   - Prefix: main
+      #     BranchName: !GetAtt AmplifyMainBranch.BranchName
 
 Outputs:
   DefaultDomain:
