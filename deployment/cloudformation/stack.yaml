@@ -1,6 +1,13 @@
 AWSTemplateFormatVersion: 2010-09-09
 
 Parameters:
+  Environment:
+    Type: String
+    AllowedValues:
+      - prod
+      - staging
+      - dev
+
   Repository:
     Type: String
     Description: GitHub Repository URL
@@ -13,6 +20,17 @@ Parameters:
   Domain:
     Type: String
     Description: Domain name to host application
+
+Conditions:
+  IsProd: !Equals 
+    - !Ref Environment
+    - prod
+  IsStaging: !Equals 
+    - !Ref Environment
+    - staging
+  IsDev: !Equals 
+    - !Ref Environment
+    - dev
 
 Resources:
   AmplifyRole:
@@ -69,8 +87,9 @@ Resources:
           Value: Website
       IAMServiceRole: !GetAtt AmplifyRole.Arn
 
-  AmplifyDevBranch:
+  AmplifyMainBranch:
     Type: AWS::Amplify::Branch
+    Condition: IsProd 
     Properties:
       BranchName: main
       AppId: !GetAtt AmplifyApp.AppId
@@ -81,9 +100,24 @@ Resources:
           Value: website-main
         - Key: Branch
           Value: main
-
-  AmplifyMainBranch:
+          
+  AmplifyStagingBranch:
     Type: AWS::Amplify::Branch
+    Condition: IsStaging 
+    Properties:
+      BranchName: staging
+      AppId: !GetAtt AmplifyApp.AppId
+      Description: Staging Branch
+      EnableAutoBuild: true
+      Tags:
+        - Key: Name
+          Value: website-staging
+        - Key: Branch
+          Value: staging
+
+  AmplifyDevBranch:
+    Type: AWS::Amplify::Branch
+    Condition: IsDev
     Properties:
       BranchName: develop
       AppId: !GetAtt AmplifyApp.AppId
@@ -97,6 +131,7 @@ Resources:
 
   AmplifyDomain:
     Type: AWS::Amplify::Domain
+    Condition: IsProd
     Properties:
       DomainName: !Ref Domain
       AppId: !GetAtt AmplifyApp.AppId

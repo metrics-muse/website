@@ -15,4 +15,5 @@ aws cloudformation deploy \
       OauthToken=${GH_PERSONAL_ACCESS_TOKEN} \
       Domain=${domain} \
       Repository=${repository} \
+      Environment=${ENV} \
   --stack-name ${ENV}-website
