@@ -95,18 +95,18 @@ Resources:
         - Key: Branch
           Value: develop
 
-  # AmplifyDomain:
-  #   Type: AWS::Amplify::Domain
-  #   Properties:
-  #     DomainName: !Ref Domain
-  #     AppId: !GetAtt AmplifyApp.AppId
-  #     SubDomainSettings:
-  #       - Prefix: main
-  #         BranchName: !GetAtt AmplifyBranch.BranchName
+  AmplifyDomain:
+    Type: AWS::Amplify::Domain
+    Properties:
+      DomainName: !Ref Domain
+      AppId: !GetAtt AmplifyApp.AppId
+      SubDomainSettings:
+        - Prefix: main
+          BranchName: !GetAtt AmplifyBranch.BranchName
 
 Outputs:
   DefaultDomain:
     Value: !GetAtt AmplifyApp.DefaultDomain
 
-  # MainBranchUrl:
-  #   Value: !Join [ ".", [ !GetAtt AmplifyBranch.BranchName, !GetAtt AmplifyDomain.DomainName ]]
+  MainBranchUrl:
+    Value: !Join [ ".", [ !GetAtt AmplifyBranch.BranchName, !GetAtt AmplifyDomain.DomainName ]]
