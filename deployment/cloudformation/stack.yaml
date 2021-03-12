@@ -55,12 +55,12 @@ Resources:
               commands:
                 - npm run build
           artifacts:
-            baseDirectory: website/build
+            baseDirectory: build
             files:
-              - 'website/**/*'
+              - '**/*'
           cache:
             paths:
-              - website/node_modules/**/*
+              - node_modules/**/*
       CustomRules:
         - Source: website/public/index.html
           Target: /index.html
