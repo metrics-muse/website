@@ -1,0 +1,100 @@
+AWSTemplateFormatVersion: 2010-09-09
+
+Parameters:
+  Repository:
+    Type: String
+    Description: GitHub Repository URL
+
+  OauthToken:
+    Type: String
+    Description: GitHub Repository URL
+    NoEcho: true
+
+  Domain:
+    Type: String
+    Description: Domain name to host application
+
+Resources:
+  AmplifyRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - amplify.amazonaws.com
+            Action:
+              - sts:AssumeRole
+      Policies:
+        - PolicyName: Amplify
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Effect: Allow
+                Action: "amplify:*"
+                Resource: "*"
+
+  AmplifyApp:
+    Type: "AWS::Amplify::App"
+    Properties:
+      Name: Website
+      Repository: !Ref Repository
+      Description: Metrics Muse website
+      OauthToken: !Ref OauthToken
+      BuildSpec: |-
+        version: 1
+        frontend:
+          phases:
+            preBuild:
+              commands:
+                - cd website
+                - npm ci
+            build:
+              commands:
+                - npm run build
+          artifacts:
+            baseDirectory: website/build
+            files:
+              - 'website/**/*'
+          cache:
+            paths:
+              - website/node_modules/**/*
+      CustomRules:
+        - Source: website/public/index.html
+          Target: /index.html
+          Status: '200'
+      Tags:
+        - Key: Name
+          Value: Website
+      IAMServiceRole: !GetAtt AmplifyRole.Arn
+
+  AmplifyBranch:
+    Type: AWS::Amplify::Branch
+    Properties:
+      BranchName: master
+      AppId: !GetAtt AmplifyApp.AppId
+      Description: Master Branch
+      EnableAutoBuild: true
+      Tags:
+        - Key: Name
+          Value: website-master
+        - Key: Branch
+          Value: master
+
+  # AmplifyDomain:
+  #   Type: AWS::Amplify::Domain
+  #   Properties:
+  #     DomainName: !Ref Domain
+  #     AppId: !GetAtt AmplifyApp.AppId
+  #     SubDomainSettings:
+  #       - Prefix: master
+  #         BranchName: !GetAtt AmplifyBranch.BranchName
+
+Outputs:
+  DefaultDomain:
+    Value: !GetAtt AmplifyApp.DefaultDomain
+
+  # MasterBranchUrl:
+  #   Value: !Join [ ".", [ !GetAtt AmplifyBranch.BranchName, !GetAtt AmplifyDomain.DomainName ]]
