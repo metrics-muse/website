@@ -144,4 +144,5 @@ Outputs:
     Value: !GetAtt AmplifyApp.DefaultDomain
 
   MainBranchUrl:
+    Condition: IsProd
     Value: !Join [ ".", [ !GetAtt AmplifyMainBranch.BranchName, !GetAtt AmplifyDomain.DomainName ]]
