@@ -135,13 +135,14 @@ Resources:
     Properties:
       DomainName: !Ref Domain
       AppId: !GetAtt AmplifyApp.AppId
-      SubDomainSettings:
-        - Prefix: main
-          BranchName: !GetAtt AmplifyMainBranch.BranchName
+      # SubDomainSettings:
+      #   - Prefix: main
+      #     BranchName: !GetAtt AmplifyMainBranch.BranchName
 
 Outputs:
   DefaultDomain:
     Value: !GetAtt AmplifyApp.DefaultDomain
 
   MainBranchUrl:
+    Condition: IsProd
     Value: !Join [ ".", [ !GetAtt AmplifyMainBranch.BranchName, !GetAtt AmplifyDomain.DomainName ]]
