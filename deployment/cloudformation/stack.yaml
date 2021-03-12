@@ -83,6 +83,19 @@ Resources:
         - Key: Branch
           Value: main
 
+  AmplifyBranch:
+    Type: AWS::Amplify::Branch
+    Properties:
+      BranchName: develop
+      AppId: !GetAtt AmplifyApp.AppId
+      Description: Develop Branch
+      EnableAutoBuild: true
+      Tags:
+        - Key: Name
+          Value: website-develop
+        - Key: Branch
+          Value: develop
+
   # AmplifyDomain:
   #   Type: AWS::Amplify::Domain
   #   Properties:
