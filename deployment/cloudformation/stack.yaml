@@ -69,7 +69,7 @@ Resources:
           Value: Website
       IAMServiceRole: !GetAtt AmplifyRole.Arn
 
-  AmplifyBranch:
+  AmplifyDevBranch:
     Type: AWS::Amplify::Branch
     Properties:
       BranchName: main
@@ -82,7 +82,7 @@ Resources:
         - Key: Branch
           Value: main
 
-  AmplifyBranch:
+  AmplifyMainBranch:
     Type: AWS::Amplify::Branch
     Properties:
       BranchName: develop
@@ -102,11 +102,11 @@ Resources:
       AppId: !GetAtt AmplifyApp.AppId
       SubDomainSettings:
         - Prefix: main
-          BranchName: !GetAtt AmplifyBranch.BranchName
+          BranchName: !GetAtt AmplifyMainBranch.BranchName
 
 Outputs:
   DefaultDomain:
     Value: !GetAtt AmplifyApp.DefaultDomain
 
   MainBranchUrl:
-    Value: !Join [ ".", [ !GetAtt AmplifyBranch.BranchName, !GetAtt AmplifyDomain.DomainName ]]
+    Value: !Join [ ".", [ !GetAtt AmplifyMainBranch.BranchName, !GetAtt AmplifyDomain.DomainName ]]
