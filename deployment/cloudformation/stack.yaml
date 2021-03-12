@@ -73,15 +73,15 @@ Resources:
   AmplifyBranch:
     Type: AWS::Amplify::Branch
     Properties:
-      BranchName: master
+      BranchName: main
       AppId: !GetAtt AmplifyApp.AppId
-      Description: Master Branch
+      Description: Main Branch
       EnableAutoBuild: true
       Tags:
         - Key: Name
-          Value: website-master
+          Value: website-main
         - Key: Branch
-          Value: master
+          Value: main
 
   # AmplifyDomain:
   #   Type: AWS::Amplify::Domain
@@ -89,12 +89,12 @@ Resources:
   #     DomainName: !Ref Domain
   #     AppId: !GetAtt AmplifyApp.AppId
   #     SubDomainSettings:
-  #       - Prefix: master
+  #       - Prefix: main
   #         BranchName: !GetAtt AmplifyBranch.BranchName
 
 Outputs:
   DefaultDomain:
     Value: !GetAtt AmplifyApp.DefaultDomain
 
-  # MasterBranchUrl:
+  # MainBranchUrl:
   #   Value: !Join [ ".", [ !GetAtt AmplifyBranch.BranchName, !GetAtt AmplifyDomain.DomainName ]]
