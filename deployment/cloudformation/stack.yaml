@@ -49,20 +49,19 @@ Resources:
           phases:
             preBuild:
               commands:
-                - cd website
                 - npm ci
             build:
               commands:
                 - npm run build
           artifacts:
-            baseDirectory: website/build
+            baseDirectory: build
             files:
-              - 'website/**/*'
+              - '**/*'
           cache:
             paths:
-              - website/node_modules/**/*
+              - node_modules/**/*
       CustomRules:
-        - Source: website/public/index.html
+        - Source: public/index.html
           Target: /index.html
           Status: '200'
       Tags:
@@ -83,18 +82,31 @@ Resources:
         - Key: Branch
           Value: main
 
-  # AmplifyDomain:
-  #   Type: AWS::Amplify::Domain
-  #   Properties:
-  #     DomainName: !Ref Domain
-  #     AppId: !GetAtt AmplifyApp.AppId
-  #     SubDomainSettings:
-  #       - Prefix: main
-  #         BranchName: !GetAtt AmplifyBranch.BranchName
+  AmplifyBranch:
+    Type: AWS::Amplify::Branch
+    Properties:
+      BranchName: develop
+      AppId: !GetAtt AmplifyApp.AppId
+      Description: Develop Branch
+      EnableAutoBuild: true
+      Tags:
+        - Key: Name
+          Value: website-develop
+        - Key: Branch
+          Value: develop
+
+  AmplifyDomain:
+    Type: AWS::Amplify::Domain
+    Properties:
+      DomainName: !Ref Domain
+      AppId: !GetAtt AmplifyApp.AppId
+      SubDomainSettings:
+        - Prefix: main
+          BranchName: !GetAtt AmplifyBranch.BranchName
 
 Outputs:
   DefaultDomain:
     Value: !GetAtt AmplifyApp.DefaultDomain
 
-  # MainBranchUrl:
-  #   Value: !Join [ ".", [ !GetAtt AmplifyBranch.BranchName, !GetAtt AmplifyDomain.DomainName ]]
+  MainBranchUrl:
+    Value: !Join [ ".", [ !GetAtt AmplifyBranch.BranchName, !GetAtt AmplifyDomain.DomainName ]]
