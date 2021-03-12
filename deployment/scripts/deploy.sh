@@ -1,13 +1,12 @@
-# if [[ -z "${GH_PERSONAL_ACCESS_TOKEN}" ]]; then
-#   echo "GH_PERSONAL_ACCESS_TOKEN is not set"
-#   exit 1
-# fi
-GH_PERSONAL_ACCESS_TOKEN="d51e35b5a9f42835c568ce2fc8dc120d241a3dc9"
+if [[ -z "${GH_PERSONAL_ACCESS_TOKEN}" ]]; then
+  echo "GH_PERSONAL_ACCESS_TOKEN is not set"
+  exit 1
+fi
 
 
 domain="metricsmuse.com"
 stack_path=./deployment/cloudformation/stack.yaml
-repository=https://github.com/metrics-muse/website/tree/master
+repository=https://github.com/metrics-muse/website
 
 aws cloudformation deploy \
   --template-file ${stack_path} \
