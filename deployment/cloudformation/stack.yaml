@@ -136,7 +136,7 @@ Resources:
       DomainName: !Ref Domain
       AppId: !GetAtt AmplifyApp.AppId
       SubDomainSettings:
-        - Prefix: ''
+        - Prefix: www
           BranchName: !GetAtt AmplifyMainBranch.BranchName
 
 Outputs:
