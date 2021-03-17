@@ -1,17 +1,17 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import {Provider, TitleBar} from '@shopify/app-bridge-react';
 
-ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
-);
+function MyApp() {
+  const config = {apiKey: '7ef750b67a3e57ec86b42bd0b0b00493', shopOrigin: "dev-metricsmuse"};
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+  return (
+    <Provider config={config}>
+      <TitleBar title="My page title"/>
+    </Provider>
+  );
+}
+
+const root = document.createElement('div');
+document.body.appendChild(root);
+ReactDOM.render(<MyApp />, root);
