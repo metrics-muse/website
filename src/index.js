@@ -6,9 +6,9 @@ function MyApp() {
   const config = {apiKey: '7ef750b67a3e57ec86b42bd0b0b00493', shopOrigin: "dev-metricsmuse"};
 
   return (
-    <Provider config={config}>
-      <TitleBar title="My page title"/>
-    </Provider>
+    <div>
+      Hello World!
+    </div>
   );
 }
 
