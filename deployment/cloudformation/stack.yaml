@@ -131,31 +131,14 @@ Resources:
 
   AmplifyDomain:
     Type: AWS::Amplify::Domain
-    Condition: IsProd
     Properties:
       DomainName: !Ref Domain
       AppId: !GetAtt AmplifyApp.AppId
       SubDomainSettings:
         - Prefix: www
           BranchName: !GetAtt AmplifyMainBranch.BranchName
-
-  AmplifyDomain:
-    Type: AWS::Amplify::Domain
-    Condition: IsStaging
-    Properties:
-      DomainName: !Ref Domain
-      AppId: !GetAtt AmplifyApp.AppId
-      SubDomainSettings:
         - Prefix: staging
           BranchName: !GetAtt AmplifyStagingBranch.BranchName
-
-  AmplifyDomain:
-    Type: AWS::Amplify::Domain
-    Condition: IsDev
-    Properties:
-      DomainName: !Ref Domain
-      AppId: !GetAtt AmplifyApp.AppId
-      SubDomainSettings:
         - Prefix: dev
           BranchName: !GetAtt AmplifyDevBranch.BranchName
 
